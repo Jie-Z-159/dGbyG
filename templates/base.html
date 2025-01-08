@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dGbyG</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/page_logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    {% set navigation %}
+        <li><a href="{{ url_for('prediction') }}">Prediction ΔG</a></li>
+        <li><a href="{{ url_for('docs') }}">Docs</a></li>
+    {% endset %}
+ 
+          
+    <nav class="sidebar" id="sidebar">
+        <img src="{{ url_for('static', filename='images/site_logo.png') }}" alt="Logo" class="logo">
+        <ul>{{navigation}}</ul>
+    </nav>
+    <!-- 主内容区 -->
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

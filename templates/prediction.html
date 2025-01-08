@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>prediction</h1>
+<p>prediction.</p>
+<form method = "post">
+    <label for="equation">reaction equation</label><br>
+    <input type="text" name="equation" placeholder="Example: 2 [H][H] + O=O = 2 O"><br>
+    <label for="cid_type">identifier type</label><br>
+    <input type="text" name="cid_type" ><br>
+    <input type="submit" name="submit" value="prediction">
+</form>
+
+{% endblock %}

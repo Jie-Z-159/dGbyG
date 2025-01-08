@@ -1,0 +1,119 @@
+/* sidebar部分的设置 */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #f3f7fe;
+    padding: 1rem;
+    transition: transform 0.3s ease; /* 动画效果 */
+}
+
+/* 隐藏状态（向左移动出屏幕） */
+.sidebar.hidden {
+    transform: translateX(-250px);
+}
+
+/* 主内容区 */
+main {
+    margin-left: 250px; /* 默认情况下，主内容区为侧边栏预留 250px */
+    transition: margin-left 0.3s ease; /* 动画效果 */
+    padding-left: 4rem; /* 给主内容区加一些内边距 */
+    padding-right: 2rem; /* 给主内容区加一些内边距 */
+}
+
+/* 当侧边栏隐藏时，主内容区占据全宽 */
+.sidebar.hidden ~ main {
+    margin-left: 0;
+}
+
+/* 控制按钮样式 */
+.sidebar-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    background-color: #16253f;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-toggle:hover {
+    background-color: #0a1b2d;
+}
+
+.sidebar .logo {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 1rem 0;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #16253f;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #c0d3eb;
+}
+
+.sidebar a.active {
+    background-color: #b0ccef;
+    font-weight: bold;
+}
+
+
+/* prediction deltaG的设置 */
+/* 导航选项卡样式 */
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    background-color: #d6e5fa;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    flex: 1;
+    background-color: #d6e5fa;
+    color: #16253f;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab-button:hover {
+    background-color: #90afce;
+    color: white;
+}
+
+.tab-button.active {
+    background-color: #90afce;
+    color: white;
+    font-weight: bold;
+}
+
+
