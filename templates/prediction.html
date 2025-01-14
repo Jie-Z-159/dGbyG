@@ -1,30 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Prediction</h1>
-<p>Fill in the form for prediction:</p>
-
-<form method="POST">
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.identifier_type.label }}
-        {{ form.identifier_type() }}
-    </div>
+<div class="container mt-5">
+    <h1>吉布斯能预测</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.identifier_type.label(class="form-label") }}
+            {{ form.identifier_type(class="form-control") }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.equation.label(class="form-label") }}
+            {{ form.equation(class="form-control", placeholder="输入反应方程式，例如：[H]OC(=O)C(=O)C([H])([H])C([H])(O[H])C(=O)O[H] = [H]OC(=O)C(=O)C([H])([H])[H] + [H]OC(=O)C([H])=O") }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.reaction_condition.label(class="form-label") }}
+            <div>
+                {% for subfield in form.reaction_condition %}
+                    <div class="form-check">
+                        {{ subfield(class="form-check-input") }}
+                        {{ subfield.label(class="form-check-label") }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
     
-    <div>
-        {{ form.equation.label }}
-        {{ form.equation() }}
+    <!-- 显示预测结果 -->
+    {% if dG_prime is not none and dG_std_dev is not none %}
+    <div class="alert alert-success mt-4">
+        <h4 class="alert-heading">预测结果</h4>
+        <p><strong>ΔG′:</strong> {{ dG_prime }} kJ/mol</p>
+        <p><strong>标准差:</strong> {{ dG_std_dev }} kJ/mol</p>
     </div>
+    {% endif %}
     
-    <div>
-        {{ form.cell_compartment.label }}
-        {{ form.cell_compartment() }}
+    <!-- 显示错误信息 -->
+    {% if error_message %}
+    <div class="alert alert-danger mt-4">
+        <h4 class="alert-heading">预测出错</h4>
+        <p>{{ error_message }}</p>
     </div>
-    
-    <div>
-        <button type="submit">Submit</button>
-    </div>
-</form>
-
+    {% endif %}
+</div>
 {% endblock %}
-
