@@ -1,10 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import Form, StringField, SelectField, SubmitField,RadioField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SelectField, RadioField, SubmitField, FloatField
+from wtforms.validators import DataRequired, NumberRange
 
 class ReactionForm(FlaskForm):
-    equation = StringField (
-        'Equation',validators=[DataRequired(message="Please enter the chemical reaction formula")],
+    equation = StringField(
+        'Equation',
+        validators=[DataRequired(message="Please enter the chemical reaction formula")],
         render_kw={"placeholder": "Example: 2 [H][H] + O=O = 2 O"}
     )
     identifier_type = SelectField(
@@ -20,17 +21,19 @@ class ReactionForm(FlaskForm):
     )
     reaction_condition = RadioField(
         'Choose reaction condition',
-        choices=[('d', 'Default'),
-                 ('c', 'Cytosol'),
-                 ('e', 'Extracellular'),
-                 ('n', 'Nucleus'),
-                 ('r', 'Endoplasmic Reticulum'),
-                 ('g', 'Golgi Apparatus'),
-                 ('l', 'Lysosome'),
-                 ('m', 'Mitochondria'),
-                 ('i', 'Inner Mitochondria'),
-                 ('x', 'Peroxisome'),
-                 ('custom','other condition')],
+        choices=[
+            ('d', 'Default'),
+            ('c', 'Cytosol'),
+            ('e', 'Extracellular'),
+            ('n', 'Nucleus'),
+            ('r', 'Endoplasmic Reticulum'),
+            ('g', 'Golgi Apparatus'),
+            ('l', 'Lysosome'),
+            ('m', 'Mitochondria'),
+            ('i', 'Inner Mitochondria'),
+            ('x', 'Peroxisome'),
+            ('custom','other condition')
+        ],
         validators=[DataRequired()]
     )
-    submit = SubmitField('prediction')
+    submit = SubmitField('Prediction')

@@ -1,53 +1,152 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>吉布斯能预测</h1>
-    <form method="POST">
+    <h1>Reaction Prediction</h1>
+    <form method="POST" id="reaction-form">
         {{ form.hidden_tag() }}
         
-        <div class="form-group">
-            {{ form.identifier_type.label(class="form-label") }}
-            {{ form.identifier_type(class="form-control") }}
+        <div>
+            {{ form.equation.label }}<br>
+            {{ form.equation(size=50, id="equation-input") }}
+            {% for error in form.equation.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </div>
         
-        <div class="form-group">
-            {{ form.equation.label(class="form-label") }}
-            {{ form.equation(class="form-control", placeholder="输入反应方程式，例如：[H]OC(=O)C(=O)C([H])([H])C([H])(O[H])C(=O)O[H] = [H]OC(=O)C(=O)C([H])([H])[H] + [H]OC(=O)C([H])=O") }}
+        <div>
+            {{ form.identifier_type.label }}<br>
+            {{ form.identifier_type() }}
+
         </div>
         
-        <div class="form-group">
-            {{ form.reaction_condition.label(class="form-label") }}
-            <div>
-                {% for subfield in form.reaction_condition %}
-                    <div class="form-check">
-                        {{ subfield(class="form-check-input") }}
-                        {{ subfield.label(class="form-check-label") }}
-                    </div>
-                {% endfor %}
+        <div>
+            {{ form.reaction_condition.label }}<br>
+            {% for subfield in form.reaction_condition %}
+                <label>{{ subfield() }} {{ subfield.label.text }}</label><br>
+            {% endfor %}
+
+        </div>
+        
+        <div class="custom-conditions" style="display: none;">
+            <h3>Custom Conditions</h3>
+            <div id="conditions-container">
+                <!-- 动态条件输入字段将插入到这里 -->
             </div>
         </div>
-        
-        <div class="form-group">
-            {{ form.submit(class="btn btn-primary") }}
+
+        <div>
+            {{ form.submit() }}
         </div>
     </form>
-    
-    <!-- 显示预测结果 -->
+
+    <!-- 显示结果 -->
     {% if dG_prime is not none and dG_std_dev is not none %}
-    <div class="alert alert-success mt-4">
-        <h4 class="alert-heading">预测结果</h4>
-        <p><strong>ΔG′:</strong> {{ dG_prime }} kJ/mol</p>
-        <p><strong>标准差:</strong> {{ dG_std_dev }} kJ/mol</p>
-    </div>
+        <div class="result">
+            <h2>Results</h2>
+            <p><strong>ΔG':</strong> {{ dG_prime }}</p>
+            <p><strong>ΔG' Standard Deviation:</strong> {{ dG_std_dev }}</p>
+        </div>
     {% endif %}
-    
+
     <!-- 显示错误信息 -->
     {% if error_message %}
-    <div class="alert alert-danger mt-4">
-        <h4 class="alert-heading">预测出错</h4>
-        <p>{{ error_message }}</p>
-    </div>
+        <div class="error">
+            <h2>Error</h2>
+            <p>{{ error_message }}</p>
+        </div>
     {% endif %}
-</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function toggleCustomConditions() {
+            if ($('input[name="reaction_condition"]:checked').val() === 'custom') {
+                $('.custom-conditions').slideDown();
+                loadCustomConditions();
+            } else {
+                $('.custom-conditions').slideUp();
+                $('#conditions-container').empty();
+            }
+        }
+
+        function loadCustomConditions() {
+            const equation = $('#equation-input').val();
+            if (!equation) {
+                alert('请先输入化学方程式。');
+                $('input[name="reaction_condition"][value="custom"]').prop('checked', false);
+                return;
+            }
+
+            $.ajax({
+                url: "{{ url_for('parse_equation_route') }}",
+                type: "POST",
+                data: { equation: equation },
+                success: function(response) {
+                    if (response.compounds) {
+                        renderConditionFields(response.compounds);
+                    } else if (response.error) {
+                        alert('错误: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('AJAX请求失败: ' + xhr.responseText);
+                }
+            });
+        }
+
+        function renderConditionFields(compounds) {
+            const container = $('#conditions-container');
+            container.empty(); // 清空之前的内容
+
+            compounds.forEach(function(compound, index) {
+                const fieldset = $(`
+                    <fieldset>
+                        <legend>${index + 1}. ${compound}</legend>
+                        
+                        <!-- pH -->
+                        <div>
+                            <label for="custom_conditions-${index}-pH">pH</label><br>
+                            <input type="range" id="custom_conditions-${index}-pH" name="custom_conditions-${index}-pH" min="0" max="14" step="0.1" value="7.0">
+                            <span id="custom_conditions-${index}-pH-value">7.0</span>
+                        </div>
+
+                        <!-- 离子强度 -->
+                        <div>
+                            <label for="custom_conditions-${index}-I">离子强度 (M)</label><br>
+                            <input type="range" id="custom_conditions-${index}-I" name="custom_conditions-${index}-I" min="0" max="1" step="0.01" value="0.1">
+                            <span id="custom_conditions-${index}-I-value">0.1</span>
+                        </div>
+
+                        <!-- pMg -->
+                        <div>
+                            <label for="custom_conditions-${index}-pMg">pMg</label><br>
+                            <input type="range" id="custom_conditions-${index}-pMg" name="custom_conditions-${index}-pMg" min="0" max="14" step="0.1" value="7.0">
+                            <span id="custom_conditions-${index}-pMg-value">7.0</span>
+                        </div>
+
+                        <!-- 电势 -->
+                        <div>
+                            <label for="custom_conditions-${index}-e_potential">电势 (V)</label><br>
+                            <input type="range" id="custom_conditions-${index}-e_potential" name="custom_conditions-${index}-e_potential" min="-1" max="1" step="0.01" value="0.0">
+                            <span id="custom_conditions-${index}-e_potential-value">0.0</span>
+                        </div>
+                    </fieldset>
+                `);
+
+                // 更新显示值
+                fieldset.find(`input[type="range"]`).on('input', function() {
+                    const id = $(this).attr('id') + '-value';
+                    $(`#${id}`).text($(this).val());
+                });
+
+                container.append(fieldset);
+            });
+        }
+
+        $(document).ready(function() {
+            toggleCustomConditions(); // 初始化显示状态
+            $('input[name="reaction_condition"]').change(function() {
+                toggleCustomConditions();
+            });
+        });
+    </script>
 {% endblock %}
