@@ -83,6 +83,7 @@ def prediction():
     if request.method == 'POST':
         if form.reaction_condition.data == 'custom':
             equation = form.equation.data
+            identifier = form.identifier_type.data
             try:
                 equation_dict = parse_equation(equation)
                 compound_names = list(equation_dict.keys())
@@ -105,14 +106,10 @@ def prediction():
                     compound_objs = []
                     stoichiometry = []
                     for compound_name in compound_names:
-                        compound_obj = Compound(compound_name, cid_type=form.identifier_type.data)
-                        conditions_set = custom_conditions[compound_name]
-                        compound_obj.condition.update(conditions_set)
-                        compound_obj.condition['T'] = 298.15  # 默认温度
-
+                        compound_obj = Compound(compound_name, input_type=identifier)
+                        compound_obj.condition = custom_conditions.get(compound_name,{})
                         compound_objs.append(compound_obj)
                         stoichiometry.append(equation_dict[compound_name])
-
                     equation_dict_compounds = dict(zip(compound_objs, stoichiometry))
                     reaction = Reaction(equation_dict_compounds, cid_type='compound')
                     dG_prime, dG_std_dev = reaction.transformed_standard_dGr_prime
