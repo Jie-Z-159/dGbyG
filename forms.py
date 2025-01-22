@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, RadioField, SubmitField, FloatField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import StringField, SelectField, RadioField, SubmitField
+from wtforms.validators import DataRequired
 
 class ReactionForm(FlaskForm):
     equation = StringField(
@@ -36,4 +36,3 @@ class ReactionForm(FlaskForm):
         ],
         validators=[DataRequired()]
     )
-    submit = SubmitField('Prediction')
