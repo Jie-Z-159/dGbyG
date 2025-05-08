@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Welcome to Gibbs Free Energy Predictor</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">This tool helps you predict the Gibbs free energy change of chemical reactions.</p>
+                    <p>To get started:</p>
+                    <ol>
+                        <li>Enter your chemical equation</li>
+                        <li>Select the identifier type</li>
+                        <li>Choose reaction conditions</li>
+                        <li>Click Submit to get results</li>
+                    </ol>
+                    <a href="{{ url_for('prediction') }}" class="btn btn-primary">Start Prediction</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card prediction-card">
+            <div class="card-header">
+                <h4 class="mb-0">Gibbs Free Energy Prediction</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="prediction-form">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        <label for="equation-input" class="form-label">{{ form.equation.label.text }}</label>
+                        {{ form.equation(size=50, id="equation-input", class="form-control") }}
+                        {% for error in form.equation.errors %}
+                            <div class="text-danger small mt-2">[{{ error }}]</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.identifier_type.label.text }}</label>
+                        {{ form.identifier_type(class="form-select") }}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.reaction_condition.label.text }}</label>
+                        <div class="reaction-conditions">
+                            {% for subfield in form.reaction_condition %}
+                                <div class="condition-option {% if subfield.label.text == 'Other Condition' %}other-condition{% endif %}">
+                                    {{ subfield(class="form-check-input") }}
+                                    <label class="condition-label">{{ subfield.label.text }}</label>
+                                    {% if subfield.label.text == 'Standard Condition' %}
+                                        <div class="condition-description">pH 7.0, I = 0.25 M, pMg = 7.0</div>
+                                    {% elif subfield.label.text == 'Physiological Condition' %}
+                                        <div class="condition-description">pH 7.4, I = 0.25 M, pMg = 3.0</div>
+                                    {% elif subfield.label.text == 'Other Condition' %}
+                                        <div class="condition-description">Set custom pH, ionic strength, pMg, and redox potential</div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="custom-conditions" style="display: none;">
+                        <h5>Custom Conditions</h5>
+                        <div id="conditions-container"></div>
+                    </div>
+                    <button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div id="result" class="alert" style="display:none;"></div>
+        <div id="std_dev" class="alert" style="display:none;"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function toggleCustomConditions() {
+        const equation = $('#equation-input').val();
+        const reaction_condition = $('input[name="reaction_condition"]:checked').val();
+        if (reaction_condition === 'custom') {
+            if (!equation) {
+                alert('Please enter the chemical equation first.');
+                $('input[name="reaction_condition"][value="custom"]').prop('checked', false);
+                return;
+            }
+            $('.custom-conditions').slideDown();
+            $.ajax({
+                url: "{{ url_for('parse_equation_route') }}",
+                type: "POST",
+                data: { equation: equation },
+                success: function(response) {
+                    if (response.compounds) {
+                        renderConditionFields(response.compounds);
+                    } else if (response.error) {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('AJAX request failed: ' + xhr.responseText);
+                }
+            });
+        } else {
+            $('.custom-conditions').slideUp();
+            $('#conditions-container').empty();
+        }
+    }
+
+    function renderConditionFields(compounds) {
+        const container = $('#conditions-container');
+        container.empty();
+        compounds.forEach(function(compound, index) {
+            const fieldset = $(`
+                <fieldset class="border p-2 mb-2">
+                    <legend class="w-auto">${index + 1}. ${compound}</legend>
+                    ${createRangeInput(index,'pH',0,14,0.005,7.0)}
+                    ${createRangeInput(index, 'I', 0, 1, 0.01, 0.25)}
+                    ${createRangeInput(index, 'pMg', 0, 14, 0.1, 7.0)}
+                    ${createRangeInput(index, 'e_potential', -1, 1, 0.01, 0.0)}
+                </fieldset>
+            `);
+            fieldset.find(`input[type="range"]`).on('input', function() {
+                const id = $(this).attr('id') + '-value';
+                $(`#${id}`).text($(this).val());
+            });
+            container.append(fieldset);
+        });
+    }
+
+    function createRangeInput(index, label, min, max, step, defaultValue) {
+        return `
+            <div class="mb-2">
+                <label for="custom_conditions-${index}-${label}" class="form-label">${label}</label>
+                <input type="range" id="custom_conditions-${index}-${label}"
+                 name="custom_conditions-${index}-${label}" 
+                 min="${min}" max="${max}" step="${step}" value="${defaultValue}" class="form-range">
+                <span id="custom_conditions-${index}-${label}-value">${defaultValue}</span>
+            </div>
+        `;
+    }
+
+    $(document).ready(function() {
+        // 初始化时检查是否需要显示自定义条件
+        toggleCustomConditions();
+
+        // 监听条件选择变化
+        $('input[name="reaction_condition"]').change(function() {
+            toggleCustomConditions();
+        });
+
+        // 点击整个选项卡片时选中对应的单选按钮
+        $('.condition-option').click(function() {
+            const radio = $(this).find('input[type="radio"]');
+            radio.prop('checked', true);
+            toggleCustomConditions();
+        });
+
+        // 提交表单
+        $('#btnSubmit').on('click', function(event) {
+            event.preventDefault();
+            let form = $('#prediction-form');
+            $.ajax({
+                type: 'POST',
+                url: "{{ url_for('calculate') }}",
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    $('#result').html('<strong>ΔG</strong>: ' + data.dG_prime + ' kJ/mol').show();
+                    $('#std_dev').html('<strong>Standard deviation</strong>: ' + data.dG_std_dev + ' kJ/mol').show();
+                },
+                error: function(xhr) {
+                    $('#result').removeClass('alert-info').addClass('alert-danger').html('AJAX request failed: ' + xhr.responseText).show();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+ 
