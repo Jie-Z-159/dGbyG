@@ -2,61 +2,170 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="card prediction-card">
             <div class="card-header">
-                <h4 class="mb-0">Gibbs Free Energy Prediction</h4>
+                <h5 class="mb-0 text-white">Prediction ΔG for equation</h4>
             </div>
             <div class="card-body">
                 <form method="POST" id="prediction-form">
                     {{ form.hidden_tag() }}
+                    
+                    <!-- Equation Input Section -->
                     <div class="mb-4">
-                        <label for="equation-input" class="form-label">{{ form.equation.label.text }}</label>
-                        {{ form.equation(size=50, id="equation-input", class="form-control") }}
-                        {% for error in form.equation.errors %}
-                            <div class="text-danger small mt-2">[{{ error }}]</div>
-                        {% endfor %}
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">{{ form.identifier_type.label.text }}</label>
-                        {{ form.identifier_type(class="form-select") }}
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">{{ form.reaction_condition.label.text }}</label>
-                        <div class="reaction-conditions">
-                            {% for subfield in form.reaction_condition %}
-                                <div class="condition-option {% if subfield.label.text == 'Other Condition' %}other-condition{% endif %}">
-                                    {{ subfield(class="form-check-input") }}
-                                    <label class="condition-label">{{ subfield.label.text }}</label>
-                                    {% if subfield.label.text == 'Standard Condition' %}
-                                        <div class="condition-description">pH 7.0, I = 0.25 M, pMg = 7.0</div>
-                                    {% elif subfield.label.text == 'Physiological Condition' %}
-                                        <div class="condition-description">pH 7.4, I = 0.25 M, pMg = 3.0</div>
-                                    {% elif subfield.label.text == 'Other Condition' %}
-                                        <div class="condition-description">Set custom pH, ionic strength, pMg, and redox potential</div>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <label for="equation-input" class="form-label mb-md-0">
+                                    <i class="fas fa-flask me-2"></i>{{ form.equation.label.text }}
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                {{ form.equation(size=50, id="equation-input", class="form-control", placeholder="Enter chemical equation (e.g., 2 [H][H] + O=O = 2 O)") }}
+                                {% for error in form.equation.errors %}
+                                    <div class="text-danger small mt-2">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Identifier Type Section -->
+                    <div class="mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <label class="form-label mb-md-0">
+                                    <i class="fas fa-tag me-2"></i>{{ form.identifier_type.label.text }}
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                {{ form.identifier_type(class="form-select") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reaction Conditions Section -->
+                    <div class="mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label mb-md-0">
+                                    <i class="fas fa-sliders-h me-2"></i>{{ form.reaction_condition.label.text }}
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="reaction-conditions">
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="d" class="form-check-input" id="condition-d">
+                                        <label class="condition-label" for="condition-d">Standard Condition</label>
+                                        <div class="condition-description">pH 7.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="c" class="form-check-input" id="condition-c">
+                                        <label class="condition-label" for="condition-c">Cytosol</label>
+                                        <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="n" class="form-check-input" id="condition-n">
+                                        <label class="condition-label" for="condition-n">Nucleus</label>
+                                        <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="r" class="form-check-input" id="condition-r">
+                                        <label class="condition-label" for="condition-r">Endoplasmic Reticulum</label>
+                                        <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="g" class="form-check-input" id="condition-g">
+                                        <label class="condition-label" for="condition-g">Golgi</label>
+                                        <div class="condition-description">pH 6.35, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="l" class="form-check-input" id="condition-l">
+                                        <label class="condition-label" for="condition-l">Lysosome</label>
+                                        <div class="condition-description">pH 5.50, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.019 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="m" class="form-check-input" id="condition-m">
+                                        <label class="condition-label" for="condition-m">Mitochondria</label>
+                                        <div class="condition-description">pH 8.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = -0.155 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="i" class="form-check-input" id="condition-i">
+                                        <label class="condition-label" for="condition-i">Intermembrane Space</label>
+                                        <div class="condition-description">pH 8.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = -0.155 V</div>
+                                    </div>
+                                    <div class="condition-option">
+                                        <input type="radio" name="reaction_condition" value="x" class="form-check-input" id="condition-x">
+                                        <label class="condition-label" for="condition-x">Peroxisome</label>
+                                        <div class="condition-description">pH 7.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.012 V</div>
+                                    </div>
+                                    <div class="condition-option custom-condition">
+                                        <input type="radio" name="reaction_condition" value="custom" class="form-check-input" id="condition-custom">
+                                        <label class="condition-label" for="condition-custom">Custom Condition</label>
+                                        <div class="condition-description">Set custom pH, ionic strength, pMg, temperature, and redox potential</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Conditions Section -->
                     <div class="custom-conditions" style="display: none;">
-                        <h5>Custom Conditions</h5>
+                        <h5 class="border-bottom pb-2 mb-4">
+                            <i class="fas fa-cogs me-2"></i>Custom Conditions
+                        </h5>
                         <div id="conditions-container"></div>
                     </div>
-                    <button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button type="button" id="btnSubmit" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-calculator me-2"></i>Calculate
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-        <div id="result" class="alert" style="display:none;"></div>
-        <div id="std_dev" class="alert" style="display:none;"></div>
+
+        <!-- Results Section -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div id="result" class="alert alert-info" style="display:none;">
+                    <i class="fas fa-chart-line me-2"></i>
+                    <strong>ΔG:</strong> <span class="result-value"></span> kJ/mol
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="std_dev" class="alert alert-secondary" style="display:none;">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    <strong>Standard deviation:</strong> <span class="result-value"></span> kJ/mol
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    const conditionParameters = {
+        'd': {'pH': 7.00, 'e_potential': 0, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'c': {'pH': 7.20, 'e_potential': 0, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'n': {'pH': 7.20, 'e_potential': 0, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'r': {'pH': 7.20, 'e_potential': 0, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'g': {'pH': 6.35, 'e_potential': 0, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'l': {'pH': 5.50, 'e_potential': 19 * 1e-3, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'm': {'pH': 8.00, 'e_potential': -155 * 1e-3, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'i': {'pH': 8.00, 'e_potential': -155 * 1e-3, 'T': 298.15, 'I': 0.25, 'pMg': 14.0},
+        'x': {'pH': 7.00, 'e_potential': 12 * 1e-3, 'T': 298.15, 'I': 0.25, 'pMg': 14.0}
+    };
+
     function toggleCustomConditions() {
         const equation = $('#equation-input').val();
         const reaction_condition = $('input[name="reaction_condition"]:checked').val();
+        
         if (reaction_condition === 'custom') {
             if (!equation) {
                 alert('Please enter the chemical equation first.');
@@ -90,12 +199,24 @@
         container.empty();
         compounds.forEach(function(compound, index) {
             const fieldset = $(`
-                <fieldset class="border p-2 mb-2">
-                    <legend class="w-auto">${index + 1}. ${compound}</legend>
-                    ${createRangeInput(index,'pH',0,14,0.005,7.0)}
-                    ${createRangeInput(index, 'I', 0, 1, 0.01, 0.25)}
-                    ${createRangeInput(index, 'pMg', 0, 14, 0.1, 7.0)}
-                    ${createRangeInput(index, 'e_potential', -1, 1, 0.01, 0.0)}
+                <fieldset class="mb-4 p-3 bg-light rounded">
+                    <legend class="w-auto px-3">
+                        <i class="fas fa-atom me-2"></i>${index + 1}. ${compound}
+                    </legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            ${createRangeInput(index,'pH',0,14,0.005,7.0)}
+                        </div>
+                        <div class="col-md-6">
+                            ${createRangeInput(index, 'I', 0, 1, 0.01, 0.25)}
+                        </div>
+                        <div class="col-md-6">
+                            ${createRangeInput(index, 'pMg', 0, 14, 0.1, 7.0)}
+                        </div>
+                        <div class="col-md-6">
+                            ${createRangeInput(index, 'e_potential', -1, 1, 0.01, 0.0)}
+                        </div>
+                    </div>
                 </fieldset>
             `);
             fieldset.find(`input[type="range"]`).on('input', function() {
@@ -107,34 +228,52 @@
     }
 
     function createRangeInput(index, label, min, max, step, defaultValue) {
+        let icon = '';
+        switch(label) {
+            case 'pH':
+                icon = 'fa-vial';
+                break;
+            case 'I':
+                icon = 'fa-flask';
+                break;
+            case 'pMg':
+                icon = 'fa-atom';
+                break;
+            case 'e_potential':
+                icon = 'fa-bolt';
+                break;
+            default:
+                icon = 'fa-sliders-h';
+        }
         return `
-            <div class="mb-2">
-                <label for="custom_conditions-${index}-${label}" class="form-label">${label}</label>
-                <input type="range" id="custom_conditions-${index}-${label}"
-                 name="custom_conditions-${index}-${label}" 
-                 min="${min}" max="${max}" step="${step}" value="${defaultValue}" class="form-range">
-                <span id="custom_conditions-${index}-${label}-value">${defaultValue}</span>
+            <div class="mb-3">
+                <label for="custom_conditions-${index}-${label}" class="form-label">
+                    <i class="fas ${icon} me-2"></i>${label}
+                </label>
+                <div class="d-flex align-items-center">
+                    <input type="range" id="custom_conditions-${index}-${label}"
+                     name="custom_conditions-${index}-${label}" 
+                     min="${min}" max="${max}" step="${step}" value="${defaultValue}" 
+                     class="form-range me-2">
+                    <span class="badge bg-primary" id="custom_conditions-${index}-${label}-value">${defaultValue}</span>
+                </div>
             </div>
         `;
     }
 
     $(document).ready(function() {
-        // 初始化时检查是否需要显示自定义条件
-        toggleCustomConditions();
-
         // 监听条件选择变化
         $('input[name="reaction_condition"]').change(function() {
             toggleCustomConditions();
         });
 
-        // 点击整个选项卡片时选中对应的单选按钮
+        // 点击整个选项区域时选中对应的单选按钮
         $('.condition-option').click(function() {
             const radio = $(this).find('input[type="radio"]');
-            radio.prop('checked', true);
-            toggleCustomConditions();
+            radio.prop('checked', true).trigger('change');
         });
 
-        // 提交表单
+        // 提交按钮点击事件
         $('#btnSubmit').on('click', function(event) {
             event.preventDefault();
             let form = $('#prediction-form');
@@ -144,11 +283,14 @@
                 data: form.serialize(),
                 dataType: 'json',
                 success: function(data) {
-                    $('#result').html('<strong>ΔG</strong>: ' + data.dG_prime + ' kJ/mol').show();
-                    $('#std_dev').html('<strong>Standard deviation</strong>: ' + data.dG_std_dev + ' kJ/mol').show();
+                    $('#result .result-value').text(data.dG_prime);
+                    $('#std_dev .result-value').text(data.dG_std_dev);
+                    $('#result, #std_dev').fadeIn();
                 },
                 error: function(xhr) {
-                    $('#result').removeClass('alert-info').addClass('alert-danger').html('AJAX request failed: ' + xhr.responseText).show();
+                    $('#result').removeClass('alert-info').addClass('alert-danger')
+                        .html('<i class="fas fa-exclamation-triangle me-2"></i>Error: ' + xhr.responseText)
+                        .fadeIn();
                 }
             });
         });

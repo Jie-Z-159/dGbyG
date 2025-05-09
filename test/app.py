@@ -85,6 +85,10 @@ def parse_equation_route():
 def home():
     return render_template('home.html')
 
+@app.route('/metabolite', methods=['GET'])
+def metabolite():
+    return render_template('metabolite.html')
+
 @app.route('/prediction', methods=['GET'])
 def prediction():
     form = ReactionForm()
