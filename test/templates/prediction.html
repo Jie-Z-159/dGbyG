@@ -8,28 +8,19 @@
                 <h5 class="mb-0 text-white">Prediction ΔG for equation</h4>
             </div>
             <div class="card-body">
+                <!-- 添加输入模式切换 -->
+                <div class="mb-4">
+                    <div class="btn-group" role="group" aria-label="Input mode">
+                        <input type="radio" class="btn-check" name="inputMode" id="singleMode" value="single" checked>
+                        <label class="btn btn-outline-primary" for="singleMode">Single Equation</label>
+                        
+                        <input type="radio" class="btn-check" name="inputMode" id="batchMode" value="batch">
+                        <label class="btn btn-outline-primary" for="batchMode">Batch Equations</label>
+                    </div>
+                </div>
+
                 <form method="POST" id="prediction-form">
                     {{ form.hidden_tag() }}
-                    
-                    <!-- Equation Input Section -->
-                    <div class="mb-4">
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                <label for="equation-input" class="form-label mb-md-0">
-                                    <i class="fas fa-flask me-2"></i>{{ form.equation.label.text }}
-                                </label>
-                            </div>
-                            <div class="col-md-9">
-                                {{ form.equation(size=50, id="equation-input", class="form-control", placeholder="Enter chemical equation (e.g., 2 [H][H] + O=O = 2 O)") }}
-                                {% for error in form.equation.errors %}
-                                    <div class="text-danger small mt-2">
-                                        <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Identifier Type Section -->
                     <div class="mb-4">
                         <div class="row align-items-center">
@@ -42,79 +33,178 @@
                                 {{ form.identifier_type(class="form-select") }}
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Reaction Conditions Section -->
-                    <div class="mb-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="form-label mb-md-0">
-                                    <i class="fas fa-sliders-h me-2"></i>{{ form.reaction_condition.label.text }}
-                                </label>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="reaction-conditions">
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="d" class="form-check-input" id="condition-d">
-                                        <label class="condition-label" for="condition-d">Standard Condition</label>
-                                        <div class="condition-description">pH 7.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="c" class="form-check-input" id="condition-c">
-                                        <label class="condition-label" for="condition-c">Cytosol</label>
-                                        <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="n" class="form-check-input" id="condition-n">
-                                        <label class="condition-label" for="condition-n">Nucleus</label>
-                                        <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="r" class="form-check-input" id="condition-r">
-                                        <label class="condition-label" for="condition-r">Endoplasmic Reticulum</label>
-                                        <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="g" class="form-check-input" id="condition-g">
-                                        <label class="condition-label" for="condition-g">Golgi</label>
-                                        <div class="condition-description">pH 6.35, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="l" class="form-check-input" id="condition-l">
-                                        <label class="condition-label" for="condition-l">Lysosome</label>
-                                        <div class="condition-description">pH 5.50, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.019 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="m" class="form-check-input" id="condition-m">
-                                        <label class="condition-label" for="condition-m">Mitochondria</label>
-                                        <div class="condition-description">pH 8.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = -0.155 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="i" class="form-check-input" id="condition-i">
-                                        <label class="condition-label" for="condition-i">Intermembrane Space</label>
-                                        <div class="condition-description">pH 8.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = -0.155 V</div>
-                                    </div>
-                                    <div class="condition-option">
-                                        <input type="radio" name="reaction_condition" value="x" class="form-check-input" id="condition-x">
-                                        <label class="condition-label" for="condition-x">Peroxisome</label>
-                                        <div class="condition-description">pH 7.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.012 V</div>
-                                    </div>
-                                    <div class="condition-option custom-condition">
-                                        <input type="radio" name="reaction_condition" value="custom" class="form-check-input" id="condition-custom">
-                                        <label class="condition-label" for="condition-custom">Custom Condition</label>
-                                        <div class="condition-description">Set custom pH, ionic strength, pMg, temperature, and redox potential</div>
+                    </div>                    
+                    <!-- 单个方程式输入部分 -->
+                    <div id="singleInputSection">
+                        <!-- Equation Input Section -->
+                        <div class="mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="equation-input" class="form-label mb-md-0">
+                                        <i class="fas fa-flask me-2"></i>{{ form.equation.label.text }}
+                                    </label>
+                                </div>
+                                <div class="col-md-9">
+                                    {{ form.equation(size=50, id="equation-input", class="form-control", placeholder="Enter chemical equation (e.g., 2 [H][H] + O=O = 2 O)") }}
+                                    {% for error in form.equation.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>                         
+                        </div>
+                        <!-- Reaction Conditions Section -->
+                        <div class="mb-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label mb-md-0">
+                                        <i class="fas fa-sliders-h me-2"></i>{{ form.reaction_condition.label.text }}
+                                    </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="reaction-conditions">
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="d" class="form-check-input" id="condition-d">
+                                            <label class="condition-label" for="condition-d">Standard Condition</label>
+                                            <div class="condition-description">pH 7.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="c" class="form-check-input" id="condition-c">
+                                            <label class="condition-label" for="condition-c">Cytosol</label>
+                                            <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="n" class="form-check-input" id="condition-n">
+                                            <label class="condition-label" for="condition-n">Nucleus</label>
+                                            <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="r" class="form-check-input" id="condition-r">
+                                            <label class="condition-label" for="condition-r">Endoplasmic Reticulum</label>
+                                            <div class="condition-description">pH 7.20, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="g" class="form-check-input" id="condition-g">
+                                            <label class="condition-label" for="condition-g">Golgi</label>
+                                            <div class="condition-description">pH 6.35, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.000 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="l" class="form-check-input" id="condition-l">
+                                            <label class="condition-label" for="condition-l">Lysosome</label>
+                                            <div class="condition-description">pH 5.50, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.019 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="m" class="form-check-input" id="condition-m">
+                                            <label class="condition-label" for="condition-m">Mitochondria</label>
+                                            <div class="condition-description">pH 8.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = -0.155 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="i" class="form-check-input" id="condition-i">
+                                            <label class="condition-label" for="condition-i">Intermembrane Space</label>
+                                            <div class="condition-description">pH 8.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = -0.155 V</div>
+                                        </div>
+                                        <div class="condition-option">
+                                            <input type="radio" name="reaction_condition" value="x" class="form-check-input" id="condition-x">
+                                            <label class="condition-label" for="condition-x">Peroxisome</label>
+                                            <div class="condition-description">pH 7.00, I = 0.25 M, pMg = 14.0, T = 298.15 K, e = 0.012 V</div>
+                                        </div>
+                                        <div class="condition-option custom-condition">
+                                            <input type="radio" name="reaction_condition" value="custom" class="form-check-input" id="condition-custom">
+                                            <label class="condition-label" for="condition-custom">Custom Condition</label>
+                                            <div class="condition-description">Set custom pH, ionic strength, pMg, and electrical potential</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Custom Conditions Section -->
+                        <div class="custom-conditions" style="display: none;">
+                            <h5 class="border-bottom pb-2 mb-4">
+                                <i class="fas fa-cogs me-2"></i>Custom Conditions
+                            </h5>
+                            <div id="conditions-container"></div>
+                        </div>                                                
                     </div>
 
-                    <!-- Custom Conditions Section -->
-                    <div class="custom-conditions" style="display: none;">
-                        <h5 class="border-bottom pb-2 mb-4">
-                            <i class="fas fa-cogs me-2"></i>Custom Conditions
-                        </h5>
-                        <div id="conditions-container"></div>
+                    <!-- 批量方程式输入部分 -->
+                    <div id="batchInputSection" style="display: none;">
+                        <div class="mb-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="batch-equations" class="form-label">
+                                        <i class="fas fa-list me-2"></i>Enter multiple equations (one per line)
+                                    </label>
+                                    <textarea id="batch-equations" class="form-control" rows="10" 
+                                        placeholder="Enter multiple equations, one per line&#10;Example:&#10;2 [H][H] + O=O = 2 O&#10;[H]OC(=O)C(=O)C([H])([H])C([H])(O[H])C(=O)O[H] = [H]OC(=O)C(=O)C([H])([H])[H] + [H]OC(=O)C([H])=O"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 批量模式的自定义条件 -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-cogs me-2"></i>Global Custom Conditions
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="global-pH" class="form-label">
+                                                <i class="fas fa-vial me-2"></i>pH
+                                            </label>
+                                            <div class="d-flex align-items-center">
+                                                <input type="range" id="global-pH" name="global-pH" 
+                                                    min="0" max="14" step="0.005" value="7.0" 
+                                                    class="form-range me-2">
+                                                <span class="badge bg-primary" id="global-pH-value">7.0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="global-I" class="form-label">
+                                                <i class="fas fa-flask me-2"></i>Ionic Strength (I)
+                                            </label>
+                                            <div class="d-flex align-items-center">
+                                                <input type="range" id="global-I" name="global-I" 
+                                                    min="0" max="1" step="0.01" value="0.25" 
+                                                    class="form-range me-2">
+                                                <span class="badge bg-primary" id="global-I-value">0.25</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="global-pMg" class="form-label">
+                                                <i class="fas fa-atom me-2"></i>pMg
+                                            </label>
+                                            <div class="d-flex align-items-center">
+                                                <input type="range" id="global-pMg" name="global-pMg" 
+                                                    min="0" max="14" step="0.1" value="7.0" 
+                                                    class="form-range me-2">
+                                                <span class="badge bg-primary" id="global-pMg-value">7.0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="global-e_potential" class="form-label">
+                                                <i class="fas fa-bolt me-2"></i>Electrical Potential (V)
+                                            </label>
+                                            <div class="d-flex align-items-center">
+                                                <input type="range" id="global-e_potential" name="global-e_potential" 
+                                                    min="-1" max="1" step="0.01" value="0.0" 
+                                                    class="form-range me-2">
+                                                <span class="badge bg-primary" id="global-e_potential-value">0.0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -128,25 +218,53 @@
         </div>
 
         <!-- Results Section -->
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div id="result" class="alert alert-info" style="display:none;">
-                    <i class="fas fa-chart-line me-2"></i>
-                    <strong>ΔG:</strong> <span class="result-value"></span> kJ/mol
+        <div id="singleResultSection">
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div id="result" class="alert alert-info" style="display:none;">
+                        <i class="fas fa-chart-line me-2"></i>
+                        <strong>ΔG:</strong> <span class="result-value"></span> kJ/mol
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="std_dev" class="alert alert-secondary" style="display:none;">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        <strong>Standard deviation:</strong> <span class="result-value"></span> kJ/mol
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div id="std_dev" class="alert alert-secondary" style="display:none;">
-                    <i class="fas fa-chart-bar me-2"></i>
-                    <strong>Standard deviation:</strong> <span class="result-value"></span> kJ/mol
+        </div>
+
+        <!-- Batch Results Section -->
+        <div id="batchResultSection" style="display: none;">
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Batch Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="batchResultsTable">
+                            <thead>
+                                <tr>
+                                    <th>Equation</th>
+                                    <th>ΔG (kJ/mol)</th>
+                                    <th>Standard Deviation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button class="btn btn-success" id="downloadResults">
+                            <i class="fas fa-download me-2"></i>Download Results
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Add Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -179,6 +297,7 @@
                 data: { equation: equation },
                 success: function(response) {
                     if (response.compounds) {
+                        $('#conditions-container').empty();
                         renderConditionFields(response.compounds);
                     } else if (response.error) {
                         alert('Error: ' + response.error);
@@ -208,13 +327,13 @@
                             ${createRangeInput(index,'pH',0,14,0.005,7.0)}
                         </div>
                         <div class="col-md-6">
-                            ${createRangeInput(index, 'I', 0, 1, 0.01, 0.25)}
+                            ${createRangeInput(index, 'Ionic Strength (I)', 0, 1, 0.01, 0.25)}
                         </div>
                         <div class="col-md-6">
                             ${createRangeInput(index, 'pMg', 0, 14, 0.1, 7.0)}
                         </div>
                         <div class="col-md-6">
-                            ${createRangeInput(index, 'e_potential', -1, 1, 0.01, 0.0)}
+                            ${createRangeInput(index, 'Electrical Potential (V)', -1, 1, 0.01, 0.0)}
                         </div>
                     </div>
                 </fieldset>
@@ -262,37 +381,195 @@
     }
 
     $(document).ready(function() {
-        // 监听条件选择变化
-        $('input[name="reaction_condition"]').change(function() {
-            toggleCustomConditions();
+        // 监听输入模式切换
+        $('input[name="inputMode"]').change(function() {
+            const mode = $(this).val();
+            if (mode === 'single') {
+                $('#singleInputSection').show();
+                $('#batchInputSection').hide();
+                $('#singleResultSection').show();
+                $('#batchResultSection').hide();
+                $('.custom-conditions').hide();
+            } else {
+                $('#singleInputSection').hide();
+                $('#batchInputSection').show();
+                $('#singleResultSection').hide();
+                $('#batchResultSection').show();
+            }
         });
 
-        // 点击整个选项区域时选中对应的单选按钮
-        $('.condition-option').click(function() {
-            const radio = $(this).find('input[type="radio"]');
-            radio.prop('checked', true).trigger('change');
+        // 监听条件选择变化
+        $('input[name="reaction_condition"]').change(function() {
+            const mode = $('input[name="inputMode"]:checked').val();
+            const condition = $(this).val();
+            
+            // 移除所有选项的选中样式
+            $('.condition-option').removeClass('selected');
+            
+            // 为当前选中的选项添加样式
+            $(this).closest('.condition-option').addClass('selected');
+            
+            if (mode === 'single') {
+                toggleCustomConditions();
+            } else {
+                if (condition === 'custom') {
+                    $('#batchCustomConditions').slideDown();
+                } else {
+                    $('#batchCustomConditions').slideUp();
+                }
+            }
+        });
+
+        // 添加点击事件监听器，使整个condition-option可点击
+        $('.condition-option').click(function(e) {
+            // 如果点击的是单选按钮或标签文本，不处理（因为它们会自动触发选中）
+            if ($(e.target).is('input[type="radio"]') || $(e.target).is('label')) {
+                return;
+            }
+            // 如果点击的是卡片其他区域，找到对应的单选按钮并选中它
+            $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+        });
+
+        // 添加Custom Condition的重复点击处理
+        $('#condition-custom').click(function() {
+            if ($(this).is(':checked')) {
+                toggleCustomConditions();
+            }
+        });
+
+        // 监听全局自定义条件的滑块变化
+        $('input[type="range"]').on('input', function() {
+            const id = $(this).attr('id') + '-value';
+            $(`#${id}`).text($(this).val());
         });
 
         // 提交按钮点击事件
         $('#btnSubmit').on('click', function(event) {
             event.preventDefault();
-            let form = $('#prediction-form');
-            $.ajax({
-                type: 'POST',
-                url: "{{ url_for('calculate') }}",
-                data: form.serialize(),
-                dataType: 'json',
-                success: function(data) {
-                    $('#result .result-value').text(data.dG_prime);
-                    $('#std_dev .result-value').text(data.dG_std_dev);
-                    $('#result, #std_dev').fadeIn();
-                },
-                error: function(xhr) {
-                    $('#result').removeClass('alert-info').addClass('alert-danger')
-                        .html('<i class="fas fa-exclamation-triangle me-2"></i>Error: ' + xhr.responseText)
-                        .fadeIn();
+            const mode = $('input[name="inputMode"]:checked').val();
+            
+            if (mode === 'single') {
+                // 单个方程式处理
+                let form = $('#prediction-form');
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ url_for('calculate') }}",
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#result .result-value').text(data.dG_prime);
+                        $('#std_dev .result-value').text(data.dG_std_dev);
+                        $('#result, #std_dev').fadeIn();
+                    },
+                    error: function(xhr) {
+                        $('#result').removeClass('alert-info').addClass('alert-danger')
+                            .html('<i class="fas fa-exclamation-triangle me-2"></i>Error: ' + xhr.responseText)
+                            .fadeIn();
+                    }
+                });
+            } else {
+                // 批量方程式处理
+                const equations = $('#batch-equations').val().split('\n').filter(eq => eq.trim());
+                if (equations.length === 0) {
+                    alert('Please enter at least one equation');
+                    return;
+                }
+
+                // 显示加载状态
+                $('#batchResultsTable tbody').html('<tr><td colspan="3" class="text-center">Calculating...</td></tr>');
+                
+                // 准备批量处理数据
+                const formData = new FormData();
+                formData.append('equations', equations.join('\n'));
+                formData.append('identifier_type', $('#identifier_type').val());
+                formData.append('reaction_condition', 'custom');  // 批量模式固定使用custom
+                formData.append('global_pH', $('#global-pH').val());
+                formData.append('global_I', $('#global-I').val());
+                formData.append('global_pMg', $('#global-pMg').val());
+                formData.append('global_e_potential', $('#global-e_potential').val());
+
+                // 发送批量处理请求
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ url_for('batch_calculate') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.results) {
+                            displayBatchResults(response.results);
+                        } else {
+                            $('#batchResultsTable tbody').html(
+                                `<tr class="table-danger">
+                                    <td colspan="3">Error: ${response.error || 'Unknown error'}</td>
+                                </tr>`
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#batchResultsTable tbody').html(
+                            `<tr class="table-danger">
+                                <td colspan="3">Error: ${xhr.responseText || 'Request failed'}</td>
+                            </tr>`
+                        );
+                    }
+                });
+            }
+        });
+
+        // 显示批量结果
+        function displayBatchResults(results) {
+            const tbody = $('#batchResultsTable tbody');
+            tbody.empty();
+
+            results.forEach(result => {
+                if (result.error) {
+                    tbody.append(`
+                        <tr class="table-danger">
+                            <td>${result.equation}</td>
+                            <td colspan="2">Error: ${result.error}</td>
+                        </tr>
+                    `);
+                } else {
+                    tbody.append(`
+                        <tr>
+                            <td>${result.equation}</td>
+                            <td>${result.dG_prime}</td>
+                            <td>${result.dG_std_dev}</td>
+                        </tr>
+                    `);
                 }
             });
+        }
+
+        // 下载结果
+        $('#downloadResults').click(function() {
+            const results = [];
+            $('#batchResultsTable tbody tr').each(function() {
+                const cells = $(this).find('td');
+                results.push({
+                    equation: cells.eq(0).text(),
+                    dG: cells.eq(1).text(),
+                    std_dev: cells.eq(2).text()
+                });
+            });
+
+            // 创建CSV内容
+            let csv = 'Equation,DeltaG (kJ/mol),Standard Deviation (kJ/mol)\n';
+            results.forEach(result => {
+                csv += `"${result.equation}",${result.dG},${result.std_dev}\n`;
+            });
+
+            // 创建下载链接
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'batch_results.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         });
     });
 </script>

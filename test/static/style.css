@@ -131,18 +131,17 @@
 }
 
 .condition-option {
-    background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 1rem;
-    cursor: pointer;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .condition-option:hover {
     border-color: #3498db;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .condition-option input[type="radio"] {
@@ -151,7 +150,26 @@
 
 .condition-option input[type="radio"]:checked + .condition-label {
     color: #3498db;
-    font-weight: 600;
+    font-weight: bold;
+}
+
+.condition-option input[type="radio"]:checked ~ .condition-description {
+    color: #3498db;
+}
+
+/* 选中状态的样式 */
+.condition-option.selected {
+    border-color: #3498db;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+}
+
+.condition-option.selected .condition-label {
+    color: #3498db;
+    font-weight: bold;
+}
+
+.condition-option.selected .condition-description {
+    color: #3498db;
 }
 
 .condition-option.other-condition {
@@ -321,7 +339,7 @@
 }
 
 .condition-option.custom-condition {
-    border: 2px solid #3498db;
+    border: 2px solid #3498db69;
     background: linear-gradient(to right, #f8f9fa, #e9ecef);
     position: relative;
 }

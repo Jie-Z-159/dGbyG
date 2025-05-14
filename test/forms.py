@@ -20,7 +20,7 @@ class ReactionForm(FlaskForm):
         validators=[DataRequired()]
     )
     reaction_condition = RadioField(
-        'Choose reaction condition',
+        'Reaction condition',
         choices=[
             ('d', 'Default'),
             ('c', 'Cytosol'),
