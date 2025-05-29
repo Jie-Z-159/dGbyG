@@ -474,6 +474,10 @@
                     alert('Please enter at least one equation');
                     return;
                 }
+                if (equations.length > 100) {
+                    alert('Maximum 100 equations allowed. Please reduce the number of equations.');
+                    return;
+                }
 
                 // 显示加载状态
                 $('#batchResultsTable tbody').html('<tr><td colspan="3" class="text-center">Calculating...</td></tr>');

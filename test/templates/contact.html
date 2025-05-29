@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h3 class="text-center mb-3">Contact Us</h3>
+            
+            <!-- Contact Information -->
+            <div class="contact-section">
+                <div class="contact-person mb-3">
+                    <h5 class="mb-2">Jie Zhong</h5>
+                    <div class="contact-details">
+                        <p class="mb-1"><i class="fas fa-user me-2"></i>PhD Student</p>
+                        <p class="mb-1"><i class="fas fa-envelope me-2"></i>zhongj1304232@outlook.com</p>
+                        <p class="mb-1"><i class="fas fa-building me-2"></i>Department of Systems Biology</p>
+                        <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>Southern University of Science and Technology</p>
+                        <p class="mb-1 ms-4">Shenzhen, Guangdong Province 518055, China</p>
+                    </div>
+                </div>
+
+                <div class="contact-person">
+                    <h5 class="mb-2">Ziwei Dai</h5>
+                    <div class="contact-details">
+                        <p class="mb-1"><i class="fas fa-user me-2"></i>Group Leader</p>
+                        <p class="mb-1"><i class="fas fa-envelope me-2"></i>daizw@sustech.edu.cn</p>
+                        <p class="mb-1"><i class="fas fa-building me-2"></i>Department of Systems Biology</p>
+                        <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>Southern University of Science and Technology</p>
+                        <p class="mb-1 ms-4">Shenzhen, Guangdong Province 518055, China</p>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .contact-person h5 {
+                    color: #2c3e50;
+                    font-weight: 600;
+                    border-bottom: 1px solid #3498db;
+                    padding-bottom: 0.2rem;
+                    display: inline-block;
+                }
+                
+                .contact-details p {
+                    color: #34495e;
+                    font-size: 0.9rem;
+                }
+                
+                .contact-details i {
+                    color: #3498db;
+                    width: 16px;
+                }
+            </style>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -94,6 +94,22 @@ def prediction():
     form = ReactionForm()
     return render_template('prediction.html',form = form)
 
+@app.route('/api', methods=['GET'])
+def api():
+    return render_template('api.html')
+
+@app.route('/contact', methods=['GET'])
+def contact():
+    return render_template('contact.html')
+
+@app.route('/citation', methods=['GET'])
+def citation():
+    return render_template('citation.html')
+
+@app.route('/faq', methods=['GET'])
+def faq():
+    return render_template('faq.html')
+
 @app.route('/calculate', methods=['POST'])
 def calculate():
     form = ReactionForm()

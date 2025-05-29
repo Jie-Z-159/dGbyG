@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Introduction -->
+            <section class="mb-5">
+                <h4 class="mb-4">Python client</h4>
+                <p>dGbyG has an up-to-date python client library available. For more documentation see <a href="https://gitee.com/f-wc/dGbyG">https://gitee.com/f-wc/dGbyG.</a></p>
+            </section>
+
+            <section class="mb-5">
+                <h4 class="mb-4">API</h4>
+                <p>dGbyG API endpoints accept POST requests with a JSON body and return JSON responses. All requests must include the Content-Type: application/json header.</p>
+            </section>
+
+            <!-- Single Equation Endpoint -->
+            <section class="mb-5">
+                <h5 class="border-bottom pb-2">Single Equation Prediction</h5>
+                <div class="mb-4">
+                    <h6>Endpoint</h6>
+                    <code class="bg-light p-2 rounded d-block">POST https://dgbyg.com/calculate</code>
+                    <small class="text-muted">Method: POST | Path: /calculate</small>
+                </div>
+                
+                <div class="mb-4">
+                    <h6>Request Parameters</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>equation</td>
+                                    <td>string</td>
+                                    <td>Yes</td>
+                                    <td>Chemical equation in SMILES format</td>
+                                </tr>
+                                <tr>
+                                    <td>identifier_type</td>
+                                    <td>string</td>
+                                    <td>Yes</td>
+                                    <td>Type of identifier (e.g., "smiles", "inchi")</td>
+                                </tr>
+                                <tr>
+                                    <td>reaction_condition</td>
+                                    <td>string</td>
+                                    <td>Yes</td>
+                                    <td>Reaction condition code (e.g., "d" for standard condition)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Example Request</h6>
+                    <pre class="bg-light p-3 rounded"><code>curl -X POST https://dgbyg.com/calculate \
+-H "Content-Type: application/json" \
+-d '{
+    "equation": "2 [H][H] + O=O = 2 O",
+    "identifier_type": "smiles",
+    "reaction_condition": "d"
+}'</code></pre>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Example Response</h6>
+                    <pre class="bg-light p-3 rounded"><code>{
+    "dG_prime": -237.13,
+    "dG_std_dev": 0.5
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Batch Equations Endpoint -->
+            <section class="mb-5">
+                <h5 class="border-bottom pb-2">Batch Equations Prediction</h5>
+                <div class="mb-4">
+                    <h6>Endpoint</h6>
+                    <code class="bg-light p-2 rounded d-block">POST /batch_calculate</code>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Request Parameters</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>equations</td>
+                                    <td>string</td>
+                                    <td>Yes</td>
+                                    <td>Multiple equations, one per line</td>
+                                </tr>
+                                <tr>
+                                    <td>identifier_type</td>
+                                    <td>string</td>
+                                    <td>Yes</td>
+                                    <td>Type of identifier</td>
+                                </tr>
+                                <tr>
+                                    <td>global_pH</td>
+                                    <td>float</td>
+                                    <td>Yes</td>
+                                    <td>Global pH value</td>
+                                </tr>
+                                <tr>
+                                    <td>global_I</td>
+                                    <td>float</td>
+                                    <td>Yes</td>
+                                    <td>Global ionic strength</td>
+                                </tr>
+                                <tr>
+                                    <td>global_pMg</td>
+                                    <td>float</td>
+                                    <td>Yes</td>
+                                    <td>Global pMg value</td>
+                                </tr>
+                                <tr>
+                                    <td>global_e_potential</td>
+                                    <td>float</td>
+                                    <td>Yes</td>
+                                    <td>Global electrical potential</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Example Request</h6>
+                    <pre class="bg-light p-3 rounded"><code>curl -X POST https://dgbyg.com/batch_calculate \
+-H "Content-Type: application/json" \
+-d '{
+    "equations": "2 [H][H] + O=O = 2 O\n[H]OC(=O)C(=O)C([H])([H])C([H])(O[H])C(=O)O[H] = [H]OC(=O)C(=O)C([H])([H])[H] + [H]OC(=O)C([H])=O",
+    "identifier_type": "smiles",
+    "global_pH": 7.0,
+    "global_I": 0.25,
+    "global_pMg": 14.0,
+    "global_e_potential": 0.0
+}'</code></pre>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Example Response</h6>
+                    <pre class="bg-light p-3 rounded"><code>{
+    "results": [
+        {
+            "equation": "2 [H][H] + O=O = 2 O",
+            "dG_prime": -237.13,
+            "dG_std_dev": 0.5
+        },
+        {
+            "equation": "[H]OC(=O)C(=O)C([H])([H])C([H])(O[H])C(=O)O[H] = [H]OC(=O)C(=O)C([H])([H])[H] + [H]OC(=O)C([H])=O",
+            "dG_prime": -15.8,
+            "dG_std_dev": 0.3
+        }
+    ]
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Error Handling -->
+            <section class="mb-5">
+                <h5 class="border-bottom pb-2">Error Handling</h5>
+                <p>The API uses standard HTTP status codes to indicate the success or failure of requests:</p>
+                <ul>
+                    <li><strong>200 OK</strong>: The request was successful</li>
+                    <li><strong>400 Bad Request</strong>: Invalid parameters or missing required fields</li>
+                    <li><strong>500 Internal Server Error</strong>: Server-side error</li>
+                </ul>
+                <p>Error responses will include a message explaining the error:</p>
+                <pre class="bg-light p-3 rounded"><code>{
+    "error": "Invalid equation format"
+}</code></pre>
+            </section>
+
+            <!-- Rate Limiting -->
+            <section class="mb-5">
+                <h5 class="border-bottom pb-2">Rate Limiting</h5>
+                <p>To ensure fair usage, the API implements rate limiting:</p>
+                <ul>
+                    <li>100 requests per hour for single equation predictions</li>
+                    <li>50 requests per hour for batch predictions</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

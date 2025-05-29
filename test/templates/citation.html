@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h3 class="text-center mb-3">Citation</h3>
+            
+            <div class="citation-section">
+                <div class="citation-item mb-3">
+                    <h5 class="mb-2">How to Cite Our Work</h5>
+                    <p class="mb-2">If you use our tools or data in your research, please cite our work as follows:</p>
+                    <div class="citation-text p-3 bg-light rounded">
+                        <p class="mb-1">Jie Zhong<sup>#</sup>, Wenchao Fang<sup>#</sup>, Ziwei Dai. (2025). Title of the Paper. <em>Journal Name</em>, Volume(Issue), Page Numbers.</p>
+                    </div>
+                </div>
+
+                <div class="citation-item">
+                    <h5 class="mb-2">BibTeX Format</h5>
+                    <div class="citation-text p-3 bg-light rounded">
+                        <pre class="mb-0"><code>@article{zhong2024title,
+  title={Title of the Paper},
+  author={Zhong, Jie and Fang, Wenchao and Dai, Ziwei},
+  journal={Journal Name},
+  volume={Volume},
+  number={Issue},
+  pages={Page Numbers},
+  year={2025},
+  publisher={Publisher}
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .citation-item h5 {
+                    color: #2c3e50;
+                    font-weight: 600;
+                    border-bottom: 1px solid #3498db;
+                    padding-bottom: 0.2rem;
+                    display: inline-block;
+                }
+                
+                .citation-text {
+                    font-size: 0.9rem;
+                    color: #34495e;
+                }
+                
+                .citation-text pre {
+                    font-size: 0.85rem;
+                    margin: 0;
+                    white-space: pre-wrap;
+                }
+            </style>
+        </div>
+    </div>
+</div>
+{% endblock %}

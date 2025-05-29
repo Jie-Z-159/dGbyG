@@ -18,6 +18,7 @@
 
 .nav-link {
     color: #2c3e50 !important;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 500;
     padding: 0.5rem 1rem !important;
     margin: 0 0.2rem;
@@ -68,6 +69,9 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 2rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .prediction-card:hover {
@@ -83,8 +87,26 @@
     border: none;
 }
 
+.prediction-card .card-header h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
 .prediction-card .card-body {
-    padding: 2rem;
+    padding: 2.5rem;
+}
+
+.btn-outline-primary{
+    color: #2f8ccb;
+    border-color: #2f8ccb;
+}
+
+.btn-check:checked + .btn-outline-primary{
+    background-color: #2f8ccb;
+    color: #fff;
+    border-color: #2f8ccb;
 }
 
 /* Form Elements */
@@ -92,14 +114,15 @@
     font-weight: 500;
     color: #2c3e50;
     margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
 .form-control, .form-select {
     border: 2px solid #e9ecef;
     border-radius: 8px;
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 1rem;
     transition: all 0.3s ease;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .form-control:focus, .form-select:focus {
@@ -125,16 +148,16 @@
 /* Reaction Conditions */
 .reaction-conditions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
     margin-bottom: 1.5rem;
 }
 
 .condition-option {
     border: 2px solid #ddd;
     border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
+    padding: 1.2rem;
+    margin-bottom: 0;
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -204,11 +227,11 @@
     color: #2c3e50;
     font-weight: 500;
     transition: all 0.3s ease;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
 }
 
 .condition-description {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #6c757d;
     margin-top: 0.5rem;
 }
@@ -224,8 +247,8 @@
 }
 
 .custom-conditions h5 {
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: #2c3e50;
     margin-bottom: 1rem;
 }
@@ -300,21 +323,13 @@
 
 /* Results Section */
 #result, #std_dev {
-    border-radius: 10px;
+    font-size: 0.95rem;
     padding: 1rem 1.5rem;
-    margin-top: 1.5rem;
-    font-weight: 500;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
 }
 
-#result {
-    background-color: rgba(52, 152, 219, 0.1);
-    border-left: 4px solid #3498db;
-}
-
-#std_dev {
-    background-color: rgba(108, 117, 125, 0.1);
-    border-left: 4px solid #6c757d;
+#result strong, #std_dev strong {
+    font-weight: 600;
 }
 
 /* Submit Button */
@@ -347,4 +362,48 @@
 .condition-option.custom-condition:hover {
     border-color: #2980b9;
     background: linear-gradient(to right, #f0f4f8, #e3e9f0);
+}
+
+/* Batch Results Table */
+#batchResultsTable {
+    font-size: 0.9rem;
+}
+
+#batchResultsTable th {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Buttons */
+.btn-group .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+}
+
+#btnSubmit {
+    font-size: 0.95rem;
+    padding: 0.75rem 2rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1400px) {
+    .prediction-card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .reaction-conditions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .prediction-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .reaction-conditions {
+        grid-template-columns: 1fr;
+    }
 } 

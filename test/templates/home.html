@@ -1,69 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="hero-section">
+<div class="main-section">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="hero-content text-center">
-                    <div class="logo-container mb-1">
-                        <span style="color: #3498db;">dG</span>byG
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="content-wrapper">
+                    <div class="brand">
+                        <span class="brand-text"><span style="color: #3498db;">dG</span>byG</span>
                     </div>
-                    <h2 class="hero-title mb-2">Predict Gibbs Energy Change</h2>
-                    <p class="hero-subtitle">
-                        Powered by graph neural networks for accurate thermodynamic predictions
-                    </p>
+                    <h1 class="title">Predict Gibbs Energy Change</h1>
+                    <p class="subtitle">Graph neural networks for thermodynamic predictions</p>
+                    <div class="action-buttons">
+                        <a href="{{ url_for('metabolite') }}" class="btn btn-primary">
+                            <i class="fas fa-search me-2"></i>Metabolite Search
+                        </a>                        
+                        <a href="{{ url_for('prediction') }}" class="btn btn-primary">
+                            <i class="fas fa-calculator me-2"></i>Reaction Predictor
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="hero-wave">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
-            <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
-    </div>
-</div>
-
-<div class="container features-section">
-    <div class="row g-3">
-        <div class="col-md-6">
-            <div class="feature-card explore">
-                <div class="card-content">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+            <div class="col-lg-5">
+                <div class="visual-wrapper">
+                    <div class="logo-container">
+                        <div class="molecule-structure">
+                            <div class="atom"></div>
+                            <div class="bond bond-1"></div>
+                            <div class="bond bond-2"></div>
+                            <div class="bond bond-3"></div>
+                        </div>
+                        <div class="logo-text">
+                            <span class="logo-dg">dG</span><span class="logo-byg">byG</span>
+                        </div>
                     </div>
-                    <h3>Explore Genome-Scale Reactions</h3>
-                    <p>Access precomputed ΔG values for reactions across multiple species from the BiGG Models database.</p>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> Comprehensive database</li>
-                        <li><i class="fas fa-check"></i> Easy metabolite search</li>
-                        <li><i class="fas fa-check"></i> Detailed reaction data</li>
-                    </ul>
-                    <a href="{{ url_for('metabolite') }}" class="btn-explore">
-                        Start Exploring
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="feature-card predict">
-                <div class="card-content">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-gear"></i>
-                    </div>
-                    <h3>Custom Reaction Conditions</h3>
-                    <p>Input any chemical reaction and customize environmental conditions.</p>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> pH adjustment</li>
-                        <li><i class="fas fa-check"></i> Ionic strength </li>
-                        <li><i class="fas fa-check"></i> Free magnesium ion concentration</li>
-                        <li><i class="fas fa-check"></i> Electrical potential</li>
-                    </ul>
-                    <a href="{{ url_for('prediction') }}" class="btn-predict">
-                        Make Predictions
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
                 </div>
             </div>
         </div>
@@ -71,228 +41,240 @@
 </div>
 
 <style>
-/* Modern Design System with Pastel Colors */
+/* Modern Design System */
 :root {
-    --primary: #c6dcfb;      /* 淡蓝色 */
-    --primary-dark: #909cf855;
-    --secondary: #86efac;    /* 淡绿色 */
-    --secondary-dark: #4ade80;
-    --accent: #fda4af;       /* 淡粉色 */
-    --accent-dark: #fb7185;
+    --primary: #3498db;
+    --primary-light: #c6dcfb;
+    --primary-dark: #2980b9;
+    --secondary: #2c3e50;
     --background: #f8fafc;
-    --text: #40526c;
+    --text: #2c3e50;
     --text-light: #64748b;
     --white: #ffffff;
+    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-/* Hero Section */
-.hero-section {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--text);
-    padding: 0.5rem 0 3rem;
+/* Main Section */
+.main-section {
+    padding: 5rem 0;
+    background: var(--background);
     position: relative;
     overflow: hidden;
-    height: 40vh;
-    display: flex;
-    align-items: center;
 }
 
-.hero-wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    line-height: 0;
+.content-wrapper {
+    padding-right: 2rem;
 }
 
-.logo-container {
-    display: inline-block;
-    padding: 0.5rem 0.25rem;
-    border-radius: 1rem;
-    backdrop-filter: blur(10px);
-    font-size: 3rem;
-    font-weight: 600;
-    color: #2c3e50 !important;
-    margin-top: -1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    letter-spacing: 1px;
+.brand {
+    margin-bottom: 1.5rem;
 }
 
-.hero-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(45deg, #2c3e50, #3498db);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.hero-subtitle {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    max-width: 800px;
-    margin: 0 auto;
-    color: #2c3e50;
-    font-weight: 500;
-}
-
-/* Features Section */
-.features-section {
-    margin-top: -2rem;
-    padding-bottom: 1rem;
-    position: relative;
-    z-index: 1;
-}
-
-.feature-card {
-    background: var(--white);
-    border-radius: 1.25rem;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    height: 100%;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.card-content {
-    padding: 1.25rem;
-    position: relative;
-    z-index: 1;
-}
-
-.icon-wrapper {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    border-radius: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.icon-wrapper i {
-    font-size: 1.1rem;
-    color: white;
-}
-
-.feature-card h3 {
-    font-size: 1.1rem;
+.brand-text {
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    color: var(--text);
 }
 
-.feature-card p {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    color: #34495e;
+.title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
     line-height: 1.5;
 }
 
-.feature-list {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0;
+.action-buttons {
+    display: flex;
+    gap: 1rem;
 }
 
-.feature-list li {
+.action-buttons .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    background: var(--gradient-primary);
+    border: none;
+    color: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    background: var(--primary-dark);
+}
+
+.visual-wrapper {
+    position: relative;
+    height: 100%;
+    min-height: 300px;
     display: flex;
     align-items: center;
-    margin-bottom: 0.25rem;
-    color: #7f8c8d;
-    font-size: 0.85rem;
-    transition: color 0.3s ease;
+    justify-content: center;
 }
 
-.feature-list li:hover {
-    color: #3498db;
-}
-
-.feature-list i {
-    color: #3498db;
-    margin-right: 0.5rem;
-    font-size: 0.85rem;
-}
-
-.btn-explore, .btn-predict {
-    display: inline-flex;
+/* Logo Design */
+.logo-container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0.4rem 0.75rem;
-    border-radius: 0.75rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    color: #2c3e50;
-    font-size: 0.85rem;
-    margin-top: 0.25rem;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    justify-content: center;
 }
 
-.btn-explore:hover, .btn-predict:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #3498db;
+.molecule-structure {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin-bottom: 1rem;
 }
 
-.btn-explore i, .btn-predict i {
-    margin-left: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.btn-explore:hover i, .btn-predict:hover i {
-    transform: translateX(4px);
-}
-
-/* Keep existing hover effects and animations */
-.feature-card::before {
-    content: '';
+.atom {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.1) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--shadow);
 }
 
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: rgba(52, 152, 219, 0.2);
+.bond {
+    position: absolute;
+    background: var(--primary);
+    height: 4px;
+    width: 100px;
+    top: 50%;
+    left: 50%;
+    transform-origin: left center;
 }
 
-.feature-card:hover::before {
-    opacity: 1;
+.bond-1 {
+    transform: translateY(-50%) rotate(0deg);
 }
+
+.bond-2 {
+    transform: translateY(-50%) rotate(120deg);
+}
+
+.bond-3 {
+    transform: translateY(-50%) rotate(240deg);
+}
+
+.logo-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.logo-dg {
+    color: var(--primary);
+    font-size: 3rem;
+}
+
+.logo-byg {
+    color: var(--text);
+}
+
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-    .hero-section {
-        padding: 0.5rem 0 2.5rem;
-        height: 35vh;
+@media (max-width: 991px) {
+    .main-section {
+        padding: 3rem 0;
     }
 
-    .hero-title {
+    .content-wrapper {
+        padding-right: 0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .action-buttons {
+        justify-content: center;
+    }
+
+    .logo-container {
+        width: 250px;
+        height: 250px;
+    }
+
+    .molecule-structure {
+        width: 150px;
+        height: 150px;
+    }
+
+    .atom {
+        width: 45px;
+        height: 45px;
+    }
+
+    .bond {
+        width: 75px;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
         font-size: 1.75rem;
     }
 
-    .features-section {
-        margin-top: -1.5rem;
+    .subtitle {
+        font-size: 1rem;
     }
 
-    .card-content {
-        padding: 1rem;
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+    }
+
+    .logo-container {
+        width: 200px;
+        height: 200px;
+    }
+
+    .molecule-structure {
+        width: 120px;
+        height: 120px;
+    }
+
+    .atom {
+        width: 35px;
+        height: 35px;
+    }
+
+    .bond {
+        width: 60px;
+    }
+
+    .logo-text {
+        font-size: 2rem;
+    }
+
+    .logo-dg {
+        font-size: 2.5rem;
     }
 }
 </style>
