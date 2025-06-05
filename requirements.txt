@@ -1,0 +1,4 @@
+Flask==3.1.0
+Flask-WTF==1.2.2
+python-dotenv==0.20.0
+dGbyG @ git+https://gitee.com/f-wc/dGbyG.git@562708cad304c21c76695452dd909a6fedeceb35#egg=dGbyG

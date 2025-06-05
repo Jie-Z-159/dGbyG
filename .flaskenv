@@ -1,0 +1,10 @@
+FLASK_APP=dgbygapp
+FLASK_ENV=production
+FLASK_DEBUG=1
+SECRET_KEY=your-secret-key
+DATABASE_URL=your-database-url
+MAIL_SERVER=your-mail-server
+MAIL_PORT=587
+MAIL_USE_TLS=true
+MAIL_USERNAME=your-email
+MAIL_PASSWORD=your-password 
